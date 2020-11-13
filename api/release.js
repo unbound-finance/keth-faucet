@@ -1,6 +1,24 @@
-const cors = require('micro-cors')()
+// const cors = require('micro-cors')()
 const ethers = require('ethers')
 const axios = require('axios')
+
+
+const allowCors = fn => async (req, res) => {
+	res.setHeader('Access-Control-Allow-Credentials', true)
+	res.setHeader('Access-Control-Allow-Origin', '*')
+	// another common pattern
+	// res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+	res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
+	res.setHeader(
+	  'Access-Control-Allow-Headers',
+	  'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+	)
+	if (req.method === 'OPTIONS') {
+	  res.status(200).end()
+	  return
+	}
+	return await fn(req, res)
+  }
 
 const config = {
 	privateKey: '0xe5d49951d72b64ecf999d198333539a6b7af0717d0ada784d0badf3ff3c27f94',
@@ -74,4 +92,4 @@ const handler = async (req, res) => {
 	}
 }
 
-module.exports = cors(handler)
+module.exports = allowCors(handler)
