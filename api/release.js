@@ -88,7 +88,7 @@ const handler = async (req, res) => {
 
 	} catch (error) {
 		console.log(error)
-		res.status(400).send("Something is wrong")
+		res.status(400).send("Something is not right")
 	}
 }
 
